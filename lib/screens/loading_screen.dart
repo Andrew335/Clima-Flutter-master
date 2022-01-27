@@ -13,12 +13,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(position);
   }
 
+  void getPermission() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: RaisedButton(
           onPressed: () {
+            getPermission();
             getLocation();
             //Get the current location
           },
