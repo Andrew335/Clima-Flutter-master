@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:clima/location.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -12,13 +13,27 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     super.initState();
     getLocation();
+    print('This line of code is triggered');
+    getData();
   }
 
   void getLocation() async {
     Location location = Location();
-    await location.getLocation();
+    await location.getCurrentLocation();
     print(location.latitude);
     print(location.longitude);
+  }
+
+  void getData() async {
+    http.Response response = await http.get(Uri.parse(
+        'http://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=b1b15e88fa797225412429c1c50c122a1'));
+
+    if (response.statusCode == 200) {
+      String data = response.body;
+      print(data);
+    } else {
+      print(response.statusCode);
+    }
   }
 
   @override
